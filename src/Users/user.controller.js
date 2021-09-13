@@ -74,11 +74,11 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => {
     const login = req.query.login;
-    var condition = login ? { login: { [Op.like]: `%${login}` } } : "asasasassasa";
+    var condition = login ? { login: { [Op.like]: `%${login}` } } : null;
 
     User.findAll({ where: condition })
         .then(data => {
-            res.send(data,"this is the data")
+            res.send(data)
         })
         .catch(err => {
             res.status(500).send({
