@@ -3,8 +3,7 @@ const { ErrorHandler } = require("./../util/error");
 const db = require("../Users");
 
 const User = db.users
-var ind = require('../Users/index')
-console.log(ind.users,'oosdkod');
+
 
 exports.auth = (req, res, next) =>{
   try {
