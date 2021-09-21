@@ -6,7 +6,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors")
 const app = express();
 var corsOptions = { origin: "http://localhost:8081" };
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const db = require("./src/Users/index")
@@ -21,36 +22,13 @@ const winston = require('./src/util/winston.logger');
 
 // var index =require('./src/Users/index');
 // console.log(index,"index");
-
+app.use('/public/img', express.static('public/img'))
 app.get("/", (req, res) => {
     res.json({ message: "welcome to appllication of mine" });
 });
 app.use(morgan('combined', { stream: winston.stream }));
 
 const Router = require('./src/Router')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 app.use('/api', Router)

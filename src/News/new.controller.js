@@ -10,37 +10,35 @@ const Op = db.Sequelize.Op;
 
 
 exports.create = (req, res) => {
-        if (!req.body.title) {
-            res.status(400).send({
-                message: "Content can not be empty!  Dostonbek please fill smth in body form"
-            });
-            return;
-        }
-        
-
-        
-        
-
-        const news = {
-            cat_id: req.body.cat_id,
-            title: req.body.title,
-            text: req.body.text,
-            author:req.body.author,
-            date:req.body.date,
-            image:req.protocol + "://" + req.get("host") + "/img/" + req.file.filename,
-        };
-
-        News.create(news)
-            .then(data => {
-                res.send(data)
-            })
-            .catch(err => {
-                res.status(500).send({
-                    message:
-                        err.message || "some error occured while creating the news"
-                });
-            });
+    console.log(req.body);
+    if (!req.file) {
+        return res.status(400).send({
+            message: "Content can not be empty!  Dostonbek please fill smth in body form"
+        });
+    }
+    
+    const news = {
+        cat_id: req.body.cat_id,
+        title: req.body.title,
+        text: req.body.text,
+        author:req.body.author,
+        date:req.body.date,
+        image:`${req.protocol + "://" + req.get("host") + "/public/img/" + req.file.filename}`,
     };
+    
+
+    News.create(news)
+        .then(data => {
+            res.send(data)
+            
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "some error occured while creating the news"
+            });
+        });
+};
 
 exports.findAll = (req, res) => {
     const title = req.query.title;
@@ -73,9 +71,11 @@ exports.findOne = (req, res) => {
 };
 
 exports.update = (req, res) => {
+console.log("ewewerwer",req.body);
+    console.log("qwerewwewwewerewe",req.file);
     const id = req.params.id;
 
-    News.update(req.body, {
+    News.update(req.body ,{
         where: { id: id }
     })
         .then(num => {
@@ -94,6 +94,7 @@ exports.update = (req, res) => {
                 message: "error updating News with the id=" + id
             });
         });
+
 }
 
 exports.delete = (req, res) => {
