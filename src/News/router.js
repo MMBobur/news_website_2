@@ -7,21 +7,21 @@ const Controller = require('./new.controller');
 
 const Filestorageenginee = multer.diskStorage({
     destination: (req, res, cb) => {
-        cb(null, './src/public/img')
+        cb(null, 'public/img')
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + "--" + file.originalname)
+        cb(null, Date.now() + file.originalname)
     }
 })
 
 const upload = multer({
     storage: Filestorageenginee
-})
+});
 
 router.route('/').get(Controller.findAll);
-router.route('/').post(upload.single('image'),Controller.create);
+router.route('/').post(upload.single('file'),Controller.create);
 router.route('/:id').get(Controller.findOne);
-router.route('/:id').put(validate(Validator.updateOne),Controller.update);
+router.route('/:id').put(upload.single('file'),Controller.update);
 router.route('/:id').delete(validate(Validator.deleteOne),Controller.delete)
 
 
